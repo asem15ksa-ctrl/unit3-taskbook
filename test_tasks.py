@@ -1,6 +1,6 @@
 import unittest
 
-from tasks import add_task, complete_task, pending, summary
+from tasks import MAX_TITLE_LENGTH, add_task, clean_title, complete_task, pending, summary
 
 
 class TestTasks(unittest.TestCase):
@@ -29,6 +29,36 @@ class TestTasks(unittest.TestCase):
         add_task(tasks, "B")
         complete_task(tasks, 1)
         self.assertEqual(summary(tasks), "1/2 done")
+
+
+class TestTitleValidation(unittest.TestCase):
+    def test_trims_surrounding_spaces(self):
+        self.assertEqual(clean_title("  Buy milk  "), "Buy milk")
+
+    def test_accepts_max_length(self):
+        title = "x" * MAX_TITLE_LENGTH
+        self.assertEqual(clean_title(title), title)
+
+    def test_rejects_empty_and_blank(self):
+        for bad in ("", "   ", "\t\n"):
+            with self.assertRaises(ValueError):
+                clean_title(bad)
+
+    def test_rejects_too_long_and_non_text(self):
+        for bad in ("x" * (MAX_TITLE_LENGTH + 1), None, 5):
+            with self.assertRaises(ValueError):
+                clean_title(bad)
+
+    def test_add_task_rejects_bad_title_and_keeps_list_clean(self):
+        tasks = []
+        with self.assertRaises(ValueError):
+            add_task(tasks, "   ")
+        self.assertEqual(tasks, [])
+
+    def test_add_task_stores_trimmed_title(self):
+        tasks = []
+        add_task(tasks, "  Study  ")
+        self.assertEqual(tasks[0]["title"], "Study")
 
 
 if __name__ == "__main__":
