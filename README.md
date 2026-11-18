@@ -1,4 +1,4 @@
-# Task Tracker
+# Task Tracker (CLI)
 
 A small command-line program to keep a to-do list: add tasks, list them and
 mark them as done.
