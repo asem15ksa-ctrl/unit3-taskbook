@@ -17,8 +17,12 @@ def main():
         print("\n1) Add task  2) List tasks  3) Complete task  4) Quit")
         choice = input("Choose: ").strip()
         if choice == "1":
-            add_task(tasks, input("Title: "))
-            print("Added.")
+            try:
+                add_task(tasks, input("Title: "))
+            except ValueError as error:
+                print(f"Not added: {error}")
+            else:
+                print("Added.")
         elif choice == "2":
             show(tasks)
         elif choice == "3":
