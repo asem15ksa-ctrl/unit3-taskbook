@@ -18,8 +18,11 @@ def clean_title(title):
 
 
 def add_task(tasks, title):
-    """Add a new task (not done yet) and return it."""
-    task = {"title": title, "done": False}
+    """Validate the title, add a new task (not done yet) and return it.
+
+    Raises ValueError for an invalid title; the list is left unchanged.
+    """
+    task = {"title": clean_title(title), "done": False}
     tasks.append(task)
     return task
 
