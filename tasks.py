@@ -1,5 +1,21 @@
 """Core logic for Task Tracker: keep a list of tasks and mark them done."""
 
+MAX_TITLE_LENGTH = 80
+
+
+def clean_title(title):
+    """Return the title without surrounding spaces, or raise ValueError."""
+    if not isinstance(title, str):
+        raise ValueError(f"Title must be text, got {title!r}")
+    title = title.strip()
+    if not title:
+        raise ValueError("Title must not be empty")
+    if len(title) > MAX_TITLE_LENGTH:
+        raise ValueError(
+            f"Title must be at most {MAX_TITLE_LENGTH} characters, got {len(title)}"
+        )
+    return title
+
 
 def add_task(tasks, title):
     """Add a new task (not done yet) and return it."""
